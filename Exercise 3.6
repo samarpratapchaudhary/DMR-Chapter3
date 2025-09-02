@@ -1,0 +1,51 @@
+/* Write a version of itoa that accepts three arguments instead of two. The third argument is a minimum field width; 
+the converted number must be padded with blanks on the left if necessary to make it wide enough. */
+#include <stdio.h>
+#include <string.h>
+
+void reverse(char s[]) {
+    int i, j;
+    char temp;
+    for (i = 0, j = strlen(s)-1; i < j; i++, j--) {
+        temp = s[i];
+        s[i] = s[j];
+        s[j] = temp;
+    }
+}
+
+void itoa(int n, char s[], int width) {
+    int i, sign;
+    i = 0;
+
+    if ((sign = n) < 0)   // record sign
+        n = -n;           // make n positive
+
+    do {
+        s[i++] = n % 10 + '0';   // get next digit
+    } while ((n /= 10) > 0);
+
+    if (sign < 0)
+        s[i++] = '-';
+
+    // pad with blanks if necessary
+    while (i < width)
+        s[i++] = ' ';
+
+    s[i] = '\0';
+    reverse(s);
+}
+
+int main() {
+    char s[100];
+
+    itoa(123, s, 5);
+    printf("'%s'\n", s);   // '  123'
+
+    itoa(-45, s, 6);
+    printf("'%s'\n", s);   // '   -45'
+
+    itoa(7890, s, 3);
+    printf("'%s'\n", s);   // '7890' (already wider)
+
+    return 0;
+}
