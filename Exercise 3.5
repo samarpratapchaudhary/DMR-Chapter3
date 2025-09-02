@@ -1,0 +1,56 @@
+/* Write the function itob(n, s, b) that converts the integer n into a base b character representation in the string s. In particular, itob(n, s, 16) should format n as a hexadecimal integer in s. */
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+
+void reverse(char s[]);
+void itob(int n, char s[], int b);
+
+int main() {
+    int num, base;
+    char str[100];
+
+    printf("Enter a number: ");
+    scanf("%d", &num);
+
+    printf("Enter base (2-16): ");
+    scanf("%d", &base);
+
+    itob(num, str, base);
+    printf("Converted value: %s\n", str);
+
+    return 0;
+}
+
+// Convert integer n to string s in base b
+void itob(int n, char s[], int b) {
+    int i, sign, digit;
+
+    sign = n;
+    i = 0;
+
+    do {
+        digit = abs(n % b);
+        if (digit > 9)
+            s[i++] = digit - 10 + 'A';   // for hex digits (A-F)
+        else
+            s[i++] = digit + '0';        // for 0–9
+    } while ((n /= b) != 0);
+
+    if (sign < 0)
+        s[i++] = '-';
+
+    s[i] = '\0';
+    reverse(s);
+}
+
+// Reverse string in place
+void reverse(char s[]) {
+    int i, j;
+    char temp;
+    for (i = 0, j = strlen(s) - 1; i < j; i++, j--) {
+        temp = s[i];
+        s[i] = s[j];
+        s[j] = temp;
+    }
+}
